@@ -1,19 +1,20 @@
 # routing
 
-> Path: `libs/routing/`
-> Parent: [`../AGENTS.md`](../AGENTS.md) · Root: [`../../AGENTS.md`](../../AGENTS.md)
+> Repository: `botopink/routing` (`git@github.com:botopink/routing.git`) · in the meta checkout: `repository/routing/`
 
-The bundled `routing` library (decisions 115, 116, 117): the route matcher and the
+The `routing` library (decisions 115, 116, 117): the route matcher and the
 routing wires that the server and the browser must both run, **one** implementation
 compiled for erlang and commonJS (`contracts.md § 1`). Neutral like std — no framework
 imports another to get the matcher; both import it by name,
 `import {match.matchPath, table.parseTable} from "routing";`.
 
-**Bundled.** `build.zig`'s `bundled_packages` names it, so the compiler embeds these
-`src/` files and loads them (as `routing/<module>`, atoms `routing@<module>`) for any
-program that imports `from "routing"` — with no `dependencies` entry, and never from this
-directory; listing `routing` in `dependencies` is refused. An edit here reaches a
-consumer only through a rebuilt compiler (`zig build`).
+**A library of its own** (decision 326). It was bundled with the compiler until
+`03-bundled-libs/138` moved it here with its history; the compiler now embeds std alone.
+A program that imports `from "routing"` declares it in `dependencies` (decision 242) —
+`{ "routing": { "git": "https://github.com/botopink/routing.git", "branch": "feat" } }`; inside the meta checkout that entry
+resolves by name through the `repository/` root (`repository/routing`), elsewhere
+through the install store. Without the entry, `from "routing"` is
+`unresolved import source "routing" — declare it in botopink.json "dependencies"`.
 
 Pure `.bp` only (decision 117 rule 8): no `#[@External]` cell, no `declare fn`, no
 `.erl` / `.mjs` sidecar, and no framework name anywhere under `src/`. It imports `std`
@@ -64,10 +65,9 @@ path" says so itself.
 ## Testing
 
 ```sh
-cd libs/routing
-../../zig-out/bin/botopink test --target erlang
-../../zig-out/bin/botopink test --target commonJS
-../../zig-out/bin/botopink format --check src test
+../botopink-lang/zig-out/bin/botopink test --target erlang
+../botopink-lang/zig-out/bin/botopink test --target commonJS
+../botopink-lang/zig-out/bin/botopink format --check src test
 ```
 
 `zig build test-libs` discovers the package as the cells `routing · erlang` and
@@ -90,3 +90,24 @@ element (`==` on arrays is reference equality).
   (the harness reads the `~p` rendering), so every refusal text is ASCII.
 - `String.slice` counts bytes on erlang and UTF-16 units on commonJS; every substring goes
   through a private `charOf` / `sub` pair.
+
+## Local gate
+
+`scripts/git-hooks/pre-commit` is the tracked pre-commit gate, self-contained:
+it sources `scripts/git-hooks/lib/runner-standalone.sh` from this repository and
+reaches nothing outside it, so a standalone clone, a checkout inside the botopink
+meta workspace and a worktree run the same gate. Install it once per clone:
+
+```sh
+git config core.hooksPath scripts/git-hooks
+```
+
+The repository is one plain package, so the gate's test stage runs
+`botopink test --target <t>` at the root on each target `botopink.json` declares
+(`erlang`, `commonJS`). Never commit with `--no-verify`; fix the red instead.
+`scripts/git-hooks/pre-commit` and `scripts/git-hooks/lib/runner-standalone.sh`
+are one text across every library repository: the meta repository's
+`hook-integrity` workflow compares the bytes (its check 4), so a change to either
+lands in all of them together. CI: `.github/workflows/test.yml` runs the same
+package on linux and macos, on each declared target, with the compiler built from
+`botopink/botopink-lang` `feat`.
