@@ -54,10 +54,10 @@ pub fn parseTable(wire: string) -> RouteEntry[] {
                 val f: string[] = line.split("|");
                 out.push(
                     RouteEntry(
-                        kind: f.at(0).unwrapOr(""),
-                        pattern: f.at(1).unwrapOr(""),
-                        slot: f.at(2).unwrapOr(""),
-                        verb: f.at(3).unwrapOr(""),
+                        kind: f.at(0) ?? "",
+                        pattern: f.at(1) ?? "",
+                        slot: f.at(2) ?? "",
+                        verb: f.at(3) ?? "",
                     ),
                 );
             }

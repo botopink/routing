@@ -29,8 +29,8 @@ test "routing: parseKinds(writeKinds(xs)) equals xs element by element" {
     try asserts.equals(back.length, xs.length);
     var i = 0;
     while (i < xs.length) {
-        val a = xs.at(i).unwrapOr(#("?", RouteKind.Dynamic));
-        val b = back.at(i).unwrapOr(#("!", RouteKind.Static));
+        val a = xs.at(i) ?? #("?", RouteKind.Dynamic);
+        val b = back.at(i) ?? #("!", RouteKind.Static);
         assert b._0 == a._0;
         assert kindText(b._1) == kindText(a._1);
         i = i + 1;

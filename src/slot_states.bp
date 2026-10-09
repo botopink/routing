@@ -58,13 +58,7 @@ pub fn parseSlotStates(wire: string) -> Array<#(string, string, SlotState)> {
     for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 3)
-            out.push(
-                #(
-                    f.at(0).unwrapOr(""),
-                    f.at(1).unwrapOr(""),
-                    stateOf(f.at(2).unwrapOr("")),
-                ),
-            );
+            out.push(#(f.at(0) ?? "", f.at(1) ?? "", stateOf(f.at(2) ?? "")));
     }
     return out;
 }

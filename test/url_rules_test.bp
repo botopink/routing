@@ -139,16 +139,16 @@ test "routing: parseRedirectTable(writeRedirectTable(rs)) recovers every field" 
     try asserts.equals(back.length, 3);
     var i = 0;
     while (i < rs.length) {
-        val a = rs
-            .at(i)
-            .unwrapOr(
-                RedirectRule(source: "?", destination: "?", permanent: false),
-            );
-        val b = back
-            .at(i)
-            .unwrapOr(
-                RedirectRule(source: "!", destination: "!", permanent: true),
-            );
+        val a = rs.at(i) ?? RedirectRule(
+            source: "?",
+            destination: "?",
+            permanent: false,
+        );
+        val b = back.at(i) ?? RedirectRule(
+            source: "!",
+            destination: "!",
+            permanent: true,
+        );
         assert a.source == b.source;
         assert a.destination == b.destination;
         assert a.permanent == b.permanent;

@@ -8,13 +8,13 @@ import {table.kindLabel};
 fn kindCell(appDir: string, path: string) -> string {
     val f = classify(appDir, path);
     if (f == null) return "-";
-    return f?.kind ?? "-";
+    return f.kind;
 }
 
 fn segmentCell(appDir: string, path: string) -> string {
     val f = classify(appDir, path);
     if (f == null) return "-";
-    return f?.segment ?? "-";
+    return f.segment;
 }
 
 fn file(segment: string, kind: string) -> ConventionFile {
@@ -108,7 +108,7 @@ test "routing: page beside route in one segment is a named conflict" {
     );
     try asserts.equals(problems.length, 1);
     try asserts.equals(
-        problems.at(0).unwrapOr(""),
+        problems.at(0) ?? "",
         "routing: `about` holds both page.bp and route.bp - a segment is a page or an endpoint, never both",
     );
 }
@@ -125,7 +125,7 @@ test "routing: two root groups claiming one URL are a named conflict" {
     );
     try asserts.equals(problems.length, 1);
     try asserts.equals(
-        problems.at(0).unwrapOr(""),
+        problems.at(0) ?? "",
         "routing: `/about` is claimed by both `(marketing)` and `(shop)` - two root layouts whose subtrees match one URL",
     );
 }

@@ -28,7 +28,7 @@ pub type RedirectRule(source: string, destination: string, permanent: bool)
 // ── helpers (private) ───────────────────────────────────────────────────────
 
 fn charOf(s: string, i: i32) -> string {
-    return s.at(i).unwrapOr("");
+    return s.at(i) ?? "";
 }
 
 fn sub(s: string, begin: i32, end: i32) -> string {
@@ -145,12 +145,12 @@ pub fn parseRedirectTable(wire: string) -> Array<RedirectRule> {
     for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 3) {
-            val flag = f.at(2).unwrapOr("");
+            val flag = f.at(2) ?? "";
             if ((flag == "1" || flag == "0"))
                 out.push(
                     RedirectRule(
-                        source: f.at(0).unwrapOr(""),
-                        destination: f.at(1).unwrapOr(""),
+                        source: f.at(0) ?? "",
+                        destination: f.at(1) ?? "",
                         permanent: flag == "1",
                     ),
                 );

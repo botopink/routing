@@ -19,7 +19,7 @@ pub type PatternSegment {
 }
 
 fn charOf(s: string, i: i32) -> string {
-    return s.at(i).unwrapOr("");
+    return s.at(i) ?? "";
 }
 
 fn sub(s: string, begin: i32, end: i32) -> string {
@@ -73,7 +73,7 @@ fn problemOf(pattern: string) -> string {
     var problem = "";
     var i = 0;
     while (i < segs.length) {
-        val seg = segs.at(i).unwrapOr("");
+        val seg = segs.at(i) ?? "";
         if (problem == "")
             if (unsupported(seg))
                 problem = patternProblem(pattern, seg)
@@ -121,7 +121,7 @@ fn textOf(p: PatternSegment) -> string {
 }
 
 fn segAt(xs: Array<PatternSegment>, i: i32) -> PatternSegment {
-    return xs.at(i).unwrapOr(PatternSegment.Literal(text: ""));
+    return xs.at(i) ?? PatternSegment.Literal(text: "");
 }
 
 // The captures, in pattern order, when `path` matches; `null` otherwise.
@@ -138,7 +138,7 @@ pub fn matchPattern(
         val p = segAt(pattern, i);
         val kind = kindOf(p);
         val text = textOf(p);
-        val got = want.at(i).unwrapOr("");
+        val got = want.at(i) ?? "";
         val present = i < want.length;
         if (kind == "L") {
             if ((present == false || got != text)) ok = false;

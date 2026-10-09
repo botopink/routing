@@ -83,17 +83,17 @@ pub fn classify(appDir: string, path: string) -> ?ConventionFile {
     var inside = parts.length > base.length;
     var i = 0;
     while (i < base.length) {
-        if (base.at(i).unwrapOr("") != parts.at(i).unwrapOr("")) inside = false;
+        if (base.at(i) ?? "" != parts.at(i) ?? "") inside = false;
         i = i + 1;
     }
     if (inside == false) return null else {
-        val file = parts.at(parts.length - 1).unwrapOr("");
+        val file = parts.at(parts.length - 1) ?? "";
         val kind = kindOf(file);
         var dirs: string[] = [];
         var hidden = false;
         var j = base.length;
         while (j < parts.length - 1) {
-            val d = parts.at(j).unwrapOr("");
+            val d = parts.at(j) ?? "";
             if (d.startsWith("_")) hidden = true;
             dirs.push(d);
             j = j + 1;
@@ -134,7 +134,7 @@ pub fn conventionConflicts(entries: Array<ConventionFile>) -> string[] {
             val group = rootGroupOf(seg);
             val prior = keys.indexOf(key);
             if (prior >= 0) {
-                val priorGroup = groups.at(prior).unwrapOr("");
+                val priorGroup = groups.at(prior) ?? "";
                 if (priorGroup != group)
                     problems.push(
                         "routing: `"

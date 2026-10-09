@@ -240,7 +240,7 @@ fn boundCount(bindings: Array<#(string, string)>, name: string) -> i32 {
 }
 
 fn boundValue(bindings: Array<#(string, string)>, name: string) -> string {
-    return bindings.filter({ b -> b._0 == name }).at(0).unwrapOr(#("", ""))._1;
+    return (bindings.filter({ b -> b._0 == name }).at(0) ?? #("", ""))._1;
 }
 
 // The first refusal `fillPattern` answers, `""` when the bindings fill it.
@@ -298,7 +298,7 @@ fn fillProblem(pattern: string, bindings: Array<#(string, string)>) -> string {
 // ── character helpers (private) ─────────────────────────────────────────────
 
 fn charOf(s: string, i: i32) -> string {
-    return s.at(i).unwrapOr("");
+    return s.at(i) ?? "";
 }
 
 fn sub(s: string, begin: i32, end: i32) -> string {

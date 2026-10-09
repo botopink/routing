@@ -43,8 +43,8 @@ test "routing: a catch-all binds the remainder and fills rest" {
     }
     assert slug == "a/b";
     assert rest.length == 2;
-    assert rest.at(0).unwrapOr("") == "a";
-    assert rest.at(1).unwrapOr("") == "b";
+    assert rest.at(0) ?? "" == "a";
+    assert rest.at(1) ?? "" == "b";
 }
 
 test "routing: a required catch-all does not match its own bare prefix" {
@@ -161,17 +161,26 @@ test "routing: a slot entry is not a candidate for a plain URL match" {
 test "routing: the layout chain is root-first and skips what has no layout" {
     val chain = layoutChain(blogTable(), "/blog/[slug]");
     assert chain.length == 3;
-    assert chain
-        .at(0)
-        .unwrapOr(RouteEntry(kind: "", pattern: "", slot: "", verb: "")).pattern
+    assert (chain.at(0) ?? RouteEntry(
+        kind: "",
+        pattern: "",
+        slot: "",
+        verb: "",
+    )).pattern
         == "/";
-    assert chain
-        .at(1)
-        .unwrapOr(RouteEntry(kind: "", pattern: "", slot: "", verb: "")).pattern
+    assert (chain.at(1) ?? RouteEntry(
+        kind: "",
+        pattern: "",
+        slot: "",
+        verb: "",
+    )).pattern
         == "/blog";
-    assert chain
-        .at(2)
-        .unwrapOr(RouteEntry(kind: "", pattern: "", slot: "", verb: "")).pattern
+    assert (chain.at(2) ?? RouteEntry(
+        kind: "",
+        pattern: "",
+        slot: "",
+        verb: "",
+    )).pattern
         == "/blog/[slug]";
     val sparse = [
         RouteEntry(kind: "L", pattern: "/", slot: "", verb: ""),
@@ -195,13 +204,19 @@ test "routing: a group never reaches the chain because it is not in a pattern" {
     assert pattern == "/about";
     val chain = layoutChain(table, pattern);
     assert chain.length == 2;
-    assert chain
-        .at(0)
-        .unwrapOr(RouteEntry(kind: "", pattern: "", slot: "", verb: "")).pattern
+    assert (chain.at(0) ?? RouteEntry(
+        kind: "",
+        pattern: "",
+        slot: "",
+        verb: "",
+    )).pattern
         == "/";
-    assert chain
-        .at(1)
-        .unwrapOr(RouteEntry(kind: "", pattern: "", slot: "", verb: "")).pattern
+    assert (chain.at(1) ?? RouteEntry(
+        kind: "",
+        pattern: "",
+        slot: "",
+        verb: "",
+    )).pattern
         == "/";
     var found = "";
     if (matchPath(table, "/about")) {

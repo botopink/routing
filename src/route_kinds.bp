@@ -40,8 +40,8 @@ pub fn parseKinds(wire: string) -> Array<#(string, RouteKind)> {
     for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 2) {
-            val pattern = f.at(0).unwrapOr("");
-            val letter = f.at(1).unwrapOr("");
+            val pattern = f.at(0) ?? "";
+            val letter = f.at(1) ?? "";
             if (letter == "S")
                 out.push(#(pattern, RouteKind.Static))
             else if (letter == "D")

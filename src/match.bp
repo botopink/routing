@@ -44,8 +44,8 @@ pub fn scoreBeats(a: i32[], b: i32[]) -> bool {
     var verdict = 0;
     var i = 0;
     while (i < n) {
-        val av = a.at(i).unwrapOr(0);
-        val bv = b.at(i).unwrapOr(0);
+        val av = a.at(i) ?? 0;
+        val bv = b.at(i) ?? 0;
         if (verdict == 0)
             if (av > bv) verdict = 1 else if (av < bv) verdict = 0 - 1;
         i = i + 1;
@@ -79,10 +79,10 @@ pub fn attempt(pattern: string, pathname: string) -> Attempt {
     var i = 0;
     var p = 0;
     while (p < pat.length) {
-        val raw = pat.at(p).unwrapOr("");
+        val raw = pat.at(p) ?? "";
         val seg = parseSegment(raw);
         val kind = kindName(seg.kind);
-        val here = url.at(i).unwrapOr("");
+        val here = url.at(i) ?? "";
         if (kind == "Static") {
             if ((i < url.length && here == raw)) {
                 score.push(3);
@@ -130,7 +130,7 @@ pub fn ancestorPatterns(pattern: string) -> string[] {
     var acc = "";
     var i = 0;
     while (i < segs.length) {
-        acc = acc + "/" + segs.at(i).unwrapOr("");
+        acc = acc + "/" + segs.at(i) ?? "";
         out.push(acc);
         i = i + 1;
     }
@@ -159,14 +159,14 @@ pub type RouteMatch(
 
 // A bound path parameter by name, `""` when the route binds none of that name.
 pub fn paramOf(m: RouteMatch, name: string) -> string {
-    return m.params.at(name).unwrapOr("");
+    return m.params.at(name) ?? "";
 }
 
 pub fn paramsOf(names: string[], values: string[]) -> Dict<string, string> {
     var d = Dict.empty();
     var i = 0;
     while (i < names.length) {
-        d = d.insert(names.at(i).unwrapOr(""), values.at(i).unwrapOr(""));
+        d = d.insert(names.at(i) ?? "", values.at(i) ?? "");
         i = i + 1;
     }
     return d;
@@ -195,9 +195,12 @@ pub fn matchPath(table: RouteEntry[], pathname: string) -> ?RouteMatch {
         }
     }
     if (best.length == 0) return null else {
-        val entry = best
-            .at(0)
-            .unwrapOr(RouteEntry(kind: "", pattern: "", slot: "", verb: ""));
+        val entry = best.at(0) ?? RouteEntry(
+            kind: "",
+            pattern: "",
+            slot: "",
+            verb: "",
+        );
         return RouteMatch(
             entry: entry,
             params: paramsOf(bestNames, bestValues),

@@ -26,16 +26,18 @@ test "routing: the wire format round-trips all eight kinds, field by field" {
     assert back.length == xs.length;
     var i = 0;
     while (i < xs.length) {
-        val a = xs
-            .at(i)
-            .unwrapOr(
-                RouteEntry(kind: "?", pattern: "?", slot: "?", verb: "?"),
-            );
-        val b = back
-            .at(i)
-            .unwrapOr(
-                RouteEntry(kind: "!", pattern: "!", slot: "!", verb: "!"),
-            );
+        val a = xs.at(i) ?? RouteEntry(
+            kind: "?",
+            pattern: "?",
+            slot: "?",
+            verb: "?",
+        );
+        val b = back.at(i) ?? RouteEntry(
+            kind: "!",
+            pattern: "!",
+            slot: "!",
+            verb: "!",
+        );
         assert a.kind == b.kind;
         assert a.pattern == b.pattern;
         assert a.slot == b.slot;
@@ -48,9 +50,9 @@ test "routing: writeTable keeps registration order and ends no line with a bar" 
     val wire = writeTable(eightKinds());
     val lines = wire.split("\n");
     assert lines.length == 8;
-    assert lines.at(0).unwrapOr("") == "L|/";
-    assert lines.at(3).unwrapOr("") == "D|/dashboard|team";
-    assert lines.at(4).unwrapOr("") == "R|/api/posts||GET";
+    assert lines.at(0) ?? "" == "L|/";
+    assert lines.at(3) ?? "" == "D|/dashboard|team";
+    assert lines.at(4) ?? "" == "R|/api/posts||GET";
     for (lines) { line ->
         assert line.endsWith("|").negate();
     }
