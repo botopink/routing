@@ -1,6 +1,6 @@
 //// The `routing` package — module-tree root (decision 115).
 ////
-//// A bundled library, neutral like std: the route matcher and the routing
+//// A shared library, neutral like std: the route matcher and the routing
 //// wires the server and the browser both read — the route table, the `k`
 //// (route kinds) and `z` (slot states) blobs, the URL rules, the navigation
 //// vocabulary, the `:param` pattern grammar and the app-file conventions.
