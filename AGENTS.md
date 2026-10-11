@@ -1,5 +1,7 @@
 # routing
 
+`decisions-taken.md` is generated — from the meta repository's `specs/<milestone>/decisions-taken.md` by `scripts/decisions-split.py`; edit it there, never here.
+
 > Repository: `botopink/routing` (`git@github.com:botopink/routing.git`) · in the meta checkout: `repository/routing/`
 
 The `routing` library (decisions 115, 116, 117): the route matcher and the
