@@ -60,6 +60,6 @@ test "routing: a garbage blob answers Dynamic and does not raise" {
 test "routing: writeKinds refuses a pattern holding the separator" {
     try asserts.throwsWith({ ->
         writeKinds([#("/a|b", RouteKind.Static)]);
-        0;
+        0
     }, "routing: route_kinds: the pattern `/a|b` holds a `|` or a newline");
 }

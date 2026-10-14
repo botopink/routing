@@ -65,6 +65,6 @@ test "routing: a malformed line is skipped, not fatal" {
 test "routing: a slot name holding a bar is refused, naming the slot" {
     try asserts.throwsWith({ ->
         writeSlotStates([#("te|am", "/x", SlotState.Matched)]);
-        0;
+        0
     }, "routing: slot_states: the slot name `te|am` holds a `|` or a newline");
 }

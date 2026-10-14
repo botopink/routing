@@ -81,14 +81,14 @@ test "routing: a leading or trailing slash is not a segment" {
 test "routing: parsePath halts on a private folder, naming it" {
     try asserts.throwsWith({ ->
         parsePath("blog/_drafts/[slug]");
-        0;
+        0
     }, "routing: `_drafts` in `blog/_drafts/[slug]` is a private folder");
 }
 
 test "routing: parsePath halts on a `|` in a segment, naming the segment" {
     try asserts.throwsWith({ ->
         parsePath("blog/a|b");
-        0;
+        0
     }, "routing: segment `a|b` in `blog/a|b` holds a `|`");
 }
 

@@ -130,21 +130,21 @@ test "routing: signalPrefixes is exactly the four and isSignalReason reads them"
 test "routing: an unknown verb raises, naming it" {
     try asserts.throwsWith({ ->
         signalFromReason("nav:teleport:/x");
-        0;
+        0
     }, "unknown signal verb `teleport`");
     try asserts.throwsWith({ ->
         signalFromReason("boom");
-        0;
+        0
     }, "`boom` is not a navigation signal reason");
 }
 
 test "routing: None has no reason and a redirect status outside 303/307/308 raises" {
     try asserts.throwsWith({ ->
         signalReason(none());
-        0;
+        0
     }, "a `None` outcome is not a signal");
     try asserts.throwsWith({ ->
         signalReason(redirect("/x", 302));
-        0;
+        0
     }, "must be 303, 307 or 308, not 302");
 }

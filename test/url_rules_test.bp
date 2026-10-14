@@ -166,6 +166,6 @@ test "routing: a bar in a redirect source or destination is refused, naming the 
         writeRedirectTable(
             [RedirectRule(source: "/a|b", destination: "/c", permanent: true)],
         );
-        0;
+        0
     }, "routing: url_rules: the redirect `/a|b` -> `/c` holds a `|` or a newline");
 }
