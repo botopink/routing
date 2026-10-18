@@ -1,0 +1,5 @@
+//// This package's own `table` module, named like the `routing` module it prints.
+
+pub fn banner(wire: string) -> string {
+    return "table " + wire.split("\n").join(" ; ");
+}

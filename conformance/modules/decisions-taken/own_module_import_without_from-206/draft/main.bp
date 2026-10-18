@@ -1,3 +1,14 @@
 //// Decision 206 — `import {…} from "<name>"` resolves only to a package — std, a bundled package or a declared dependency.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {table.RouteEntry, table.writeTable} from "routing";
+import {table.banner};
+
+pub fn main() -> void {
+    val wire = writeTable([
+        RouteEntry(kind: "L", pattern: "/", slot: "", verb: ""),
+        RouteEntry(kind: "P", pattern: "/blog/[slug]", slot: "", verb: ""),
+        RouteEntry(kind: "R", pattern: "/rss.xml", slot: "", verb: "GET"),
+    ]);
+    terminal.print(banner(wire));
+}

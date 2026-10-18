@@ -1,0 +1,10 @@
+{
+  "name": "conformance",
+  "version": "0.0.1",
+  "workspaces": ["*"],
+  "targets": ["erlang", "commonJS"],
+  "dependencies": {
+    "routing": { "path": "../.." },
+    "validation": { "git": "https://github.com/botopink/validation.git", "branch": "feat" }
+  }
+}

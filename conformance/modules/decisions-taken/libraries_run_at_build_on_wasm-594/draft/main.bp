@@ -1,3 +1,29 @@
 //// Decision 594 — Every library runs at build on the wasm comptime runtime (434), jhonstart first; a function only Erlang or Node can run is a located error there.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {table.RouteEntry, table.writeTable, table.parseTable} from "routing";
+import {url_rules.PathRules, url_rules.clientHref} from "routing";
+import {route_kinds.RouteKind, route_kinds.writeKinds} from "routing";
+
+fn entries() -> Array<RouteEntry> {
+    return [
+        RouteEntry(kind: "L", pattern: "/", slot: "", verb: ""),
+        RouteEntry(kind: "P", pattern: "/blog/[slug]", slot: "", verb: ""),
+        RouteEntry(kind: "R", pattern: "/api/posts", slot: "", verb: "POST"),
+    ];
+}
+
+pub fn main() -> void {
+    // `routing` runs at build on the wasm comptime runtime, whatever the target.
+    val atBuild = comptime writeTable(entries());
+    val atRun = writeTable(entries());
+    terminal.print(atBuild);
+    terminal.print(atBuild == atRun);
+    terminal.print(parseTable(atBuild).length);
+    terminal.print(
+        comptime clientHref(PathRules(basePath: "/app", trailingSlash: true), "/blog/olá"),
+    );
+    terminal.print(
+        comptime writeKinds([#("/", RouteKind.Static), #("/blog/[slug]", RouteKind.Dynamic)]),
+    );
+}

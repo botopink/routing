@@ -1,3 +1,32 @@
 //// Decision 202 — No page declares or forces its stage: jhonstart's `#[page]` reads through 186's capability whether the page reaches a `#
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {route_kinds.RouteKind, route_kinds.writeKinds, route_kinds.routeKindOf} from "routing";
+
+// A page as `#[page]` sees it: its pattern and whether it reaches a
+// `#[serverOnly]` hook by `use`. Nothing else decides its stage.
+pub type Page(pattern: string, reachesServerHook: bool)
+
+fn stageOf(page: Page) -> RouteKind {
+    return if (page.reachesServerHook) RouteKind.Dynamic else RouteKind.Static;
+}
+
+fn stageText(k: RouteKind) -> string {
+    return case k {
+        Static -> "prerendered at build";
+        Dynamic -> "rendered per request";
+    };
+}
+
+pub fn main() -> void {
+    val pages = [
+        Page(pattern: "/", reachesServerHook: false),
+        Page(pattern: "/blog/[slug]", reachesServerHook: false),
+        Page(pattern: "/account", reachesServerHook: true),
+    ];
+    val wire = writeKinds(pages.map({ p -> #(p.pattern, stageOf(p)) }));
+    terminal.print(wire);
+    for (["/", "/blog/[slug]", "/account", "/unknown"]) { pattern ->
+        terminal.print(pattern + ": " + stageText(routeKindOf(wire, pattern)));
+    }
+}

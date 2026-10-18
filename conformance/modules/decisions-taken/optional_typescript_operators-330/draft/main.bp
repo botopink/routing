@@ -1,3 +1,47 @@
 //// Decision 330 — `?T` is read with TypeScript's operators and has no methods; `result` goes; a type declared in a type is its associated type.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {table.RouteEntry, match.matchPath} from "routing";
+import {pattern.parsePattern} from "routing";
+
+pub type Site {
+    // `Link` is declared in `Site`'s body, so it is `Site`'s associated type.
+    pub type Link(href: string, label: ?string)
+
+    pub fn links(paths: Array<string>) -> Array<Site.Link> {
+        return paths.map(
+            { p -> Site.Link(href: p, label: if (p == "/") "home" else null) },
+        );
+    }
+}
+
+fn notFound(present: bool) -> ?fn(path: string) -> string {
+    return if (present)
+        fn(path: string) -> string {
+            return "no route for " + path;
+        }
+    else
+        null;
+}
+
+pub fn main() -> void {
+    val table = [
+        RouteEntry(kind: "P", pattern: "/blog/[slug]", slot: "", verb: ""),
+        RouteEntry(kind: "P", pattern: "/docs/[...path]", slot: "", verb: ""),
+    ];
+    val post = matchPath(table, "/blog/hello");
+    val missing = matchPath(table, "/about");
+    terminal.print(post?.entry.pattern ?? "none");
+    terminal.print(post?.params.at("slug") ?? "");
+    terminal.print(missing?.params.at("slug") ?? "no slug");
+    terminal.print(matchPath(table, "/docs/a/b")?.rest?.[1] ?? "");
+    terminal.print(notFound(true)?.("/about") ?? "");
+    terminal.print(notFound(false)?.("/about") ?? "silent");
+    terminal.print(post!.entry.kind);
+    val links = Site.links(["/", "/blog/hello"]);
+    terminal.print(links.at(1)?.label ?? "unlabelled");
+    val parsed = parsePattern("/users/:id");
+    terminal.print(parsed.isOk());
+    terminal.print(parsed.map({ segs -> segs.length }).unwrapOr(0));
+    terminal.print((missing?.entry.pattern ?? "") == "" || links.length > 2);
+}

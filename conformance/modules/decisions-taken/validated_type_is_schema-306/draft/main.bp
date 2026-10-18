@@ -1,3 +1,35 @@
 //// Decision 306 — The type is the only schema, and `#[schema]` becomes `#[validated]`.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {table.RouteEntry, match.matchPath} from "routing";
+import {decorators.validated, decorators.coerce, decorators.minValue} from "validation";
+import {report.ValidationReport} from "validation";
+
+// The route's segments, typed: the type is the only schema.
+#[validated]
+pub type ProductParams(#[coerce] #[minValue(1)] id: i32)
+
+fn product(pathname: string) -> string {
+    val table = [
+        RouteEntry(kind: "P", pattern: "/produto/[id]", slot: "", verb: ""),
+    ];
+    val m = matchPath(table, pathname);
+    if (m == null) return pathname + " -> no route";
+    val read: Result<ProductParams, ValidationReport> = ProductParams.bind(
+        m.params.pairs,
+    );
+    return case read {
+        Ok(p) -> pathname + " -> product " + p.id;
+        Error(report) -> pathname
+            + " -> 404 ("
+            + report.violations.map({ v -> v.field + ":" + v.code }).join(",")
+            + ")";
+    };
+}
+
+pub fn main() -> void {
+    terminal.print(product("/produto/42"));
+    terminal.print(product("/produto/abc"));
+    terminal.print(product("/produto/0"));
+    terminal.print(product("/carrinho"));
+}

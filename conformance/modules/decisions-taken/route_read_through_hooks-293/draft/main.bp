@@ -1,3 +1,37 @@
 //// Decision 293 — A page reads its route through hooks, never a parameter.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {table.RouteEntry, match.matchPath} from "routing";
+import {segment.paramNamesOf} from "routing";
+import {navigation.NavKind, navigation.NavOutcome, navigation.signalReason} from "routing";
+
+// The record a page reads with `use params<ProductParams>()`.
+pub type ProductParams(id: i64)
+
+// What the `params` hook answers for one request: the matched segments,
+// parsed to the record's field types; a segment that does not parse is a
+// not-found, answered before the page renders.
+fn params(pathname: string) -> Result<ProductParams, NavOutcome> {
+    val notFound = NavOutcome(kind: NavKind.NotFound, location: "", status: 404);
+    val table = [
+        RouteEntry(kind: "P", pattern: "/produto/[id]", slot: "", verb: ""),
+    ];
+    val m = matchPath(table, pathname);
+    if (m == null) throw notFound;
+    val id = try m.params.at("id")!.parseInt() catch throw notFound;
+    return ProductParams(id: id);
+}
+
+fn show(pathname: string) -> string {
+    return case params(pathname) {
+        Ok(p) -> pathname + " -> product " + p.id;
+        Error(out) -> pathname + " -> " + signalReason(out);
+    };
+}
+
+pub fn main() -> void {
+    // `#[page]` checks the record's fields against the pattern's segments.
+    terminal.print(paramNamesOf("/produto/[id]").join(","));
+    terminal.print(show("/produto/42"));
+    terminal.print(show("/produto/abc"));
+}

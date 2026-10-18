@@ -1,3 +1,32 @@
 //// Decision 273 — 222 holds whole: a route handler is never exported by the build.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {conventions.classify, conventions.kindLetter} from "routing";
+import {segment.parsePath, segment.patternOf} from "routing";
+import {route_kinds.RouteKind, route_kinds.writeKinds, route_kinds.routeKindOf} from "routing";
+
+// What the build exports as a file: only what `#[page]` prerendered.
+fn exported(kinds: string, pattern: string) -> bool {
+    return case routeKindOf(kinds, pattern) {
+        Static -> true;
+        Dynamic -> false;
+    };
+}
+
+pub fn main() -> void {
+    val rss = classify("app", "app/rss.xml/route.bp")!;
+    val feed = classify("app", "app/feed.xml/page.bp")!;
+    val rssPattern = patternOf(parsePath(rss.segment));
+    val feedPattern = patternOf(parsePath(feed.segment));
+    terminal.print(rssPattern + " " + kindLetter(rss.kind));
+    terminal.print(feedPattern + " " + kindLetter(feed.kind));
+    // The build's static pass: the page-kind feed is prerendered, the handler
+    // is not a page and is never named.
+    val kinds = writeKinds([#(feedPattern, RouteKind.Static)]);
+    terminal.print(kinds);
+    terminal.print("export " + rssPattern + ": " + exported(kinds, rssPattern));
+    terminal.print("export "
+        + feedPattern
+        + ": "
+        + exported(kinds, feedPattern));
+}

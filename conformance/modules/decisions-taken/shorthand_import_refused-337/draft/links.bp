@@ -1,0 +1,7 @@
+//// The site's links, imported by `main` by their module's path.
+
+import {url_rules.PathRules, url_rules.clientHref} from "routing";
+
+pub fn href(pathname: string) -> string {
+    return clientHref(PathRules(basePath: "/docs", trailingSlash: false), pathname);
+}

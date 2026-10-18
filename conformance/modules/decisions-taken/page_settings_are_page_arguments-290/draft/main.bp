@@ -1,3 +1,28 @@
 //// Decision 290 — No segment configuration; a page's settings are `#[page]` arguments.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {table.RouteEntry, table.writeTable, table.parseTable} from "routing";
+import {match.matchPath} from "routing";
+import {route_kinds.RouteKind, route_kinds.writeKinds, route_kinds.routeKindOf} from "routing";
+
+pub fn main() -> void {
+    // The app tree as routing carries it: what each file is and where it sits,
+    // and nothing a segment configures.
+    val wire = writeTable([
+        RouteEntry(kind: "L", pattern: "/", slot: "", verb: ""),
+        RouteEntry(kind: "L", pattern: "/blog", slot: "", verb: ""),
+        RouteEntry(kind: "P", pattern: "/blog/[slug]", slot: "", verb: ""),
+    ]);
+    terminal.print(wire);
+    val m = matchPath(parseTable(wire), "/blog/hello")!;
+    terminal.print(m.chain.map({ e -> e.kind + " " + e.pattern }).join(" > "));
+    // `S` / `D` is what `#[page]` read from the page's hooks; the
+    // `revalidate:` and `dynamicParams:` it was handed are its own arguments.
+    val kinds = writeKinds([#("/blog/[slug]", RouteKind.Static)]);
+    terminal.print(
+        case routeKindOf(kinds, m.entry.pattern) {
+            Static -> "prerendered";
+            Dynamic -> "per request";
+        },
+    );
+}

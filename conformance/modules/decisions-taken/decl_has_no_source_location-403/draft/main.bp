@@ -1,3 +1,25 @@
 //// Decision 403 — `@Decl` carries no source location: a decorator's output never depends on where its file sits.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {conventions.classify} from "routing";
+import {segment.parsePath, segment.patternOf, segment.paramNamesOf} from "routing";
+import {table.RouteEntry, table.writeTable, match.matchPath} from "routing";
+
+// What the file-convention route table hands `#[page]`: the route, as an
+// argument, computed from the file's path in the app tree.
+fn routeOf(path: string) -> string {
+    val file = classify("app", path);
+    if (file == null) return "";
+    return patternOf(parsePath(file.segment));
+}
+
+pub fn main() -> void {
+    val route = routeOf("app/(marketing)/blog/[slug]/page.bpp");
+    terminal.print("page(\"" + route + "\", BlogPost)");
+    terminal.print(paramNamesOf(route).join(","));
+    val table = [RouteEntry(kind: "P", pattern: route, slot: "", verb: "")];
+    terminal.print(writeTable(table));
+    terminal.print(matchPath(table, "/blog/hello")?.params.at("slug") ?? "");
+    // The same page moved to another group answers the same route.
+    terminal.print(routeOf("app/(site)/blog/[slug]/page.bpp") == route);
+}

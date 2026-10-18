@@ -1,3 +1,35 @@
 //// Decision 203 — One routing convention: `app/blog/[slug]/page.bpp` — a `.bpp` is valid where a `page.bp` is, beside `layout`, `loading`
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {conventions.classify, conventions.conventionConflicts} from "routing";
+import {segment.parsePath, segment.patternOf} from "routing";
+
+fn describe(path: string) -> string {
+    val file = classify("app", path);
+    if (file == null) return path + " -> not a routing file";
+    return path
+        + " -> "
+        + file.kind
+        + " of "
+        + patternOf(parsePath(file.segment));
+}
+
+pub fn main() -> void {
+    val paths = [
+        "app/blog/[slug]/page.bpp",
+        "app/blog/[slug]/layout.bpp",
+        "app/blog/[slug]/loading.bp",
+        "app/blog/[slug]/error.bp",
+        "app/about/page.bp",
+        "app/blog.bp",
+        "pages/blog/[slug].bpp",
+    ];
+    for (paths) { path ->
+        terminal.print(describe(path));
+    }
+    val files = paths
+        .map({ p -> classify("app", p) })
+        .filter({ f -> f != null })
+        .map({ f -> f! });
+    terminal.print(conventionConflicts(files).length);
+}

@@ -1,3 +1,42 @@
 //// Decision 285 — The toolchain knows these things about `.bpp`:
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {conventions.ConventionFile, conventions.fileKinds, conventions.kindLetter} from "routing";
+import {conventions.classify, conventions.conventionConflicts} from "routing";
+import {segment.parsePath, segment.patternOf} from "routing";
+
+// One line of the route table the framework generates at build: the comptime
+// function it calls for the file's kind, on the file's unfolded default
+// function, with the route as an argument.
+fn generated(file: ConventionFile) -> string {
+    return file.kind
+        + "(\""
+        + patternOf(parsePath(file.segment))
+        + "\", "
+        + file.authoredPath
+        + ")";
+}
+
+pub fn main() -> void {
+    // The file kinds are routing's rule, in wrap order, outermost first.
+    terminal.print(
+        fileKinds().map({ k -> k + ":" + kindLetter(k) }).join(" "),
+    );
+    var files: Array<ConventionFile> = [];
+    for ([
+        "app/layout.bpp",
+        "app/blog/[slug]/page.bpp",
+        "app/blog/[slug]/not-found.bpp",
+        "app/api/route.bp",
+        "app/api/page.bpp",
+    ]) { path ->
+        val file = classify("app", path);
+        if (file != null) files.push(file);
+    }
+    for (files) { f ->
+        terminal.print(generated(f));
+    }
+    for (conventionConflicts(files)) { problem ->
+        terminal.print(problem);
+    }
+}

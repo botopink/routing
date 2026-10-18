@@ -1,3 +1,37 @@
 //// Decision 222 — A route handler is always server: a `#[route]` handler (`route.bp`, answering a `Response`, every method, `GET` included
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {table.RouteEntry, match.matchPath} from "routing";
+import {route_kinds.RouteKind, route_kinds.writeKinds, route_kinds.routeKindOf} from "routing";
+
+fn served(k: RouteKind) -> string {
+    return case k {
+        Static -> "prerendered";
+        Dynamic -> "per request";
+    };
+}
+
+pub fn main() -> void {
+    val table = [
+        RouteEntry(kind: "P", pattern: "/posts", slot: "", verb: ""),
+        RouteEntry(kind: "R", pattern: "/api/posts", slot: "", verb: "GET"),
+        RouteEntry(kind: "R", pattern: "/api/posts", slot: "", verb: "POST"),
+    ];
+    // The build's static pass names the pages it prerendered; a handler is
+    // never one of them, `GET` included.
+    val kinds = writeKinds([#("/posts", RouteKind.Static)]);
+    for (["/posts", "/api/posts"]) { pathname ->
+        val m = matchPath(table, pathname);
+        val kind = m?.entry.kind ?? "";
+        terminal.print(
+            pathname
+                + " -> "
+                + kind
+                + " "
+                + served(routeKindOf(kinds, m?.entry.pattern ?? pathname)),
+        );
+    }
+    terminal.print(
+        table.filter({ e -> e.kind == "R" }).map({ e -> e.verb }).join(","),
+    );
+}

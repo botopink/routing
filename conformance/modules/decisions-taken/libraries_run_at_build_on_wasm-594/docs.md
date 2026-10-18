@@ -1,3 +1,7 @@
 # Decision 594 — Every library runs at build on the wasm comptime runtime (434), jhonstart first; a function only Erlang or Node can run is a located error there.
 
+The example writes the same route table twice: once inside a `comptime`, which runs at build, and once at run time. `routing` is written entirely in botopink and has no host cell of its own, so every function the `comptime` reaches has a wasm form: `writeTable`, `clientHref` with the `encoding.percentEncode` it calls from std, and `writeKinds`. The build-time calls therefore run on the wasm comptime runtime whatever `--target` the build uses, and their answers are spliced into the program as literals. The table written at build is the one written at run (`atBuild == atRun` prints `true` on every target), and `parseTable` reads its three entries back. `clientHref` at build prints `/app/blog/ol%C3%A1/`, the segment percent-encoded and the trailing slash applied, and `writeKinds` at build prints the `k` blob `/|S` and `/blog/[slug]|D`. Nothing in the program is refused at build. If a `comptime` reached a function that only Erlang or Node can run, it would be refused at build, at the call, naming the cell, on an Erlang build as on any other.
+
+Cells in this repository that prove it: none yet. They come with front 157's Conformance step (decision 465). Since the library has no host cell, the wasm forms it relies on are std's.
+
 [draft/main.bp](draft/main.bp)

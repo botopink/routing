@@ -1,3 +1,25 @@
 //// Decision 282 — No role is declared by an export's name.
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {conventions.classify, conventions.kindLetter} from "routing";
+
+// What a file of the app tree is, read from its name alone: a convention kind
+// and its route-table letter, or nothing.
+fn role(path: string) -> string {
+    val file = classify("app", path);
+    if (file == null) return path + " -> not a routing file";
+    return path + " -> " + file.kind + " (" + kindLetter(file.kind) + ")";
+}
+
+pub fn main() -> void {
+    for ([
+        "app/blog/[slug]/page.bp",
+        "app/blog/[slug]/layout.bp",
+        "app/blog/[slug]/staticPaths.bp",
+        "app/blog/[slug]/generateMetadata.bp",
+        "app/blog/opengraph-image/size.bp",
+        "app/content/collections.bp",
+    ]) { path ->
+        terminal.print(role(path));
+    }
+}

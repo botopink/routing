@@ -1,3 +1,35 @@
 //// Decision 221 — A `.bpp` file's decorator is written in the header, on a line just before the separator, annotating the unfolded functio
 
-pub fn main() -> void {}
+import {io.terminal} from "std";
+import {conventions.ConventionFile, conventions.classify, conventions.kindLetter} from "routing";
+import {segment.parsePath, segment.patternOf} from "routing";
+import {table.RouteEntry, table.writeTable} from "routing";
+
+// The route-table entry of one convention file: its kind letter and its
+// pattern — no field names a decorator, because no decorator comes from the
+// file's name.
+fn entryOf(file: ConventionFile) -> RouteEntry {
+    return RouteEntry(
+        kind: kindLetter(file.kind),
+        pattern: patternOf(parsePath(file.segment)),
+        slot: "",
+        verb: "",
+    );
+}
+
+pub fn main() -> void {
+    var entries: Array<RouteEntry> = [];
+    for ([
+        "app/layout.bpp",
+        "app/blog/[slug]/page.bpp",
+        "app/blog/[slug]/loading.bpp",
+        "app/about/page.bp",
+    ]) { path ->
+        val file = classify("app", path);
+        if (file != null) {
+            terminal.print(file.authoredPath + " -> " + file.kind);
+            entries.push(entryOf(file));
+        }
+    }
+    terminal.print(writeTable(entries));
+}
