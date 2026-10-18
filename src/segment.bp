@@ -197,7 +197,7 @@ pub fn paramNamesOf(seg: string) -> string[] {
 pub fn fillPattern(
     pattern: string,
     bindings: Array<#(string, string)>,
-) -> @Result<string, string> {
+) -> Result<string, string> {
     val problem = fillProblem(pattern, bindings);
     if (problem != "") throw problem;
     var parts: string[] = [];

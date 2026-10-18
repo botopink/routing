@@ -97,7 +97,7 @@ fn segmentOf(seg: string) -> PatternSegment {
         return PatternSegment.Literal(text: seg);
 }
 
-pub fn parsePattern(pattern: string) -> @Result<Array<PatternSegment>, string> {
+pub fn parsePattern(pattern: string) -> Result<Array<PatternSegment>, string> {
     val problem = problemOf(pattern);
     if (problem != "") throw problem;
     return segments(pattern).map({ seg -> segmentOf(seg) });

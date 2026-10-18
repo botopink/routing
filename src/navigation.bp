@@ -14,6 +14,8 @@
 //// reading a REASON is STRICT (a `nav:` reason with an unknown verb halts,
 //// naming the verb — it can only come from code that spelled a reason by hand).
 
+import {failure.panic} from "std";
+
 pub type NavKind {
     None,
     NotFound,
@@ -88,7 +90,7 @@ pub fn signalReason(out: NavOutcome) -> string {
     else if (out.status == 303)
         return "nav:see-other:" + out.location
     else
-        @panic(
+        panic(
             "routing: navigation: a redirect status must be 303, 307 or 308, not "
                 + out.status.toString(),
         );
@@ -121,7 +123,7 @@ pub fn signalFromReason(reason: string) -> NavOutcome {
         val rest = after(reason, "nav:");
         val verb = rest.split(":").at(0) ?? "";
         if (reason.startsWith("nav:"))
-            @panic(
+            panic(
                 "routing: navigation: unknown signal verb `"
                     + verb
                     + "` in `"
@@ -129,7 +131,7 @@ pub fn signalFromReason(reason: string) -> NavOutcome {
                     + "` - the verbs are not-found, redirect, permanent-redirect and see-other",
             )
         else
-            @panic(
+            panic(
                 "routing: navigation: `"
                     + reason
                     + "` is not a navigation signal reason",
