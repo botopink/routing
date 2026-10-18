@@ -1,0 +1,3 @@
+//// Decision 282 — No role is declared by an export's name.
+
+pub fn main() -> void {}
