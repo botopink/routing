@@ -88,7 +88,7 @@ pub fn kindName(k: SegmentKind) -> string {
 
 // `""` when the path is registrable, the refusal otherwise. Split out for the
 // reason `config.bp` splits `durationProblem` out: `parsePath` HALTS on a bad
-// path (it is called from an emitted module-load `val`, which has no `@Result`
+// path (it is called from an emitted module-load `val`, which has no `Result`
 // return to carry an error), and a test can only read the message if reading
 // it does not take the test down with it.
 pub fn pathProblem(seg: string) -> string {
