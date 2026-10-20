@@ -22,7 +22,7 @@ pub fn main() -> void {
     terminal.print(
         fileKinds().map({ k -> k + ":" + kindLetter(k) }).join(" "),
     );
-    var files: Array<ConventionFile> = [];
+    var files: array<ConventionFile> = [];
     for ([
         "app/layout.bpp",
         "app/blog/[slug]/page.bpp",

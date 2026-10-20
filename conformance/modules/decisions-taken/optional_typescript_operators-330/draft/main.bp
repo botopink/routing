@@ -8,7 +8,7 @@ pub type Site {
     // `Link` is declared in `Site`'s body, so it is `Site`'s associated type.
     pub type Link(href: string, label: ?string)
 
-    pub fn links(paths: Array<string>) -> Array<Site.Link> {
+    pub fn links(paths: array<string>) -> array<Site.Link> {
         return paths.map(
             { p -> Site.Link(href: p, label: if (p == "/") "home" else null) },
         );

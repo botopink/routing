@@ -20,7 +20,7 @@ fn kindLetter(k: RouteKind) -> string {
     };
 }
 
-pub fn writeKinds(kinds: Array<#(string, RouteKind)>) -> string {
+pub fn writeKinds(kinds: array<#(string, RouteKind)>) -> string {
     var lines: string[] = [];
     for (kinds) { k ->
         val pattern = k._0;
@@ -35,8 +35,8 @@ pub fn writeKinds(kinds: Array<#(string, RouteKind)>) -> string {
     return lines.join("\n");
 }
 
-pub fn parseKinds(wire: string) -> Array<#(string, RouteKind)> {
-    var out: Array<#(string, RouteKind)> = [];
+pub fn parseKinds(wire: string) -> array<#(string, RouteKind)> {
+    var out: array<#(string, RouteKind)> = [];
     for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 2) {

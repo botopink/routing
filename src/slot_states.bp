@@ -39,7 +39,7 @@ fn separatorFree(s: string) -> bool {
     return (s.contains("|") || s.contains("\n")).negate();
 }
 
-pub fn writeSlotStates(states: Array<#(string, string, SlotState)>) -> string {
+pub fn writeSlotStates(states: array<#(string, string, SlotState)>) -> string {
     var lines: string[] = [];
     for (states) { s ->
         assert separatorFree(s._0), "routing: slot_states: the slot name `"
@@ -53,8 +53,8 @@ pub fn writeSlotStates(states: Array<#(string, string, SlotState)>) -> string {
     return lines.join("\n");
 }
 
-pub fn parseSlotStates(wire: string) -> Array<#(string, string, SlotState)> {
-    var out: Array<#(string, string, SlotState)> = [];
+pub fn parseSlotStates(wire: string) -> array<#(string, string, SlotState)> {
+    var out: array<#(string, string, SlotState)> = [];
     for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 3)

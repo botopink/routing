@@ -94,7 +94,7 @@ test "routing: parsePath halts on a `|` in a segment, naming the segment" {
 
 // ── step 2: the segment helpers (front 102) ─────────────────────────────────
 
-fn filled(pattern: string, bindings: Array<#(string, string)>) -> string {
+fn filled(pattern: string, bindings: array<#(string, string)>) -> string {
     val r = fillPattern(pattern, bindings);
     val text = case r {
         Ok(p) -> p;

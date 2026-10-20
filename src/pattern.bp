@@ -97,7 +97,7 @@ fn segmentOf(seg: string) -> PatternSegment {
         return PatternSegment.Literal(text: seg);
 }
 
-pub fn parsePattern(pattern: string) -> Result<Array<PatternSegment>, string> {
+pub fn parsePattern(pattern: string) -> Result<array<PatternSegment>, string> {
     val problem = problemOf(pattern);
     if (problem != "") throw problem;
     return segments(pattern).map({ seg -> segmentOf(seg) });
@@ -120,17 +120,17 @@ fn textOf(p: PatternSegment) -> string {
     };
 }
 
-fn segAt(xs: Array<PatternSegment>, i: i32) -> PatternSegment {
+fn segAt(xs: array<PatternSegment>, i: i32) -> PatternSegment {
     return xs.at(i) ?? PatternSegment.Literal(text: "");
 }
 
 // The captures, in pattern order, when `path` matches; `null` otherwise.
 pub fn matchPattern(
-    pattern: Array<PatternSegment>,
+    pattern: array<PatternSegment>,
     path: string,
-) -> ?Array<#(string, string)> {
+) -> ?array<#(string, string)> {
     val want = segments(path);
-    var captures: Array<#(string, string)> = [];
+    var captures: array<#(string, string)> = [];
     var ok = true;
     var tail = false;
     var i = 0;

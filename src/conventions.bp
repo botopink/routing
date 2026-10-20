@@ -114,7 +114,7 @@ pub fn classify(appDir: string, path: string) -> ?ConventionFile {
 // endpoint), then every URL two root route groups both claim with a `page`
 // (two root layouts whose subtrees match one URL). A segment `pathProblem`
 // refuses is skipped — that refusal is the caller's, one step up.
-pub fn conventionConflicts(entries: Array<ConventionFile>) -> string[] {
+pub fn conventionConflicts(entries: array<ConventionFile>) -> string[] {
     var problems: string[] = [];
     for (segmentsOf(entries)) { seg ->
         if ((holds(entries, seg, "page") && holds(entries, seg, "route")))
@@ -156,7 +156,7 @@ pub fn conventionConflicts(entries: Array<ConventionFile>) -> string[] {
 // ── private ─────────────────────────────────────────────────────────────────
 
 // The distinct registrable segments of `entries`, in first-seen order.
-fn segmentsOf(entries: Array<ConventionFile>) -> string[] {
+fn segmentsOf(entries: array<ConventionFile>) -> string[] {
     var out: string[] = [];
     for (entries) { e ->
         if ((out.indexOf(e.segment) < 0 && pathProblem(e.segment) == ""))
@@ -165,7 +165,7 @@ fn segmentsOf(entries: Array<ConventionFile>) -> string[] {
     return out;
 }
 
-fn holds(entries: Array<ConventionFile>, seg: string, kind: string) -> bool {
+fn holds(entries: array<ConventionFile>, seg: string, kind: string) -> bool {
     var found = false;
     for (entries) { e ->
         if ((e.segment == seg && e.kind == kind)) found = true;

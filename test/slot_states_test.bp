@@ -12,7 +12,7 @@ fn stateText(s: SlotState) -> string {
     };
 }
 
-fn sample() -> Array<#(string, string, SlotState)> {
+fn sample() -> array<#(string, string, SlotState)> {
     return [
         #("team", "/dashboard/settings", SlotState.Matched),
         #("analytics", "/dashboard", SlotState.Defaulted),

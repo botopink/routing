@@ -123,7 +123,7 @@ fn separatorFree(s: string) -> bool {
     return (s.contains("|") || s.contains("\n")).negate();
 }
 
-pub fn writeRedirectTable(rs: Array<RedirectRule>) -> string {
+pub fn writeRedirectTable(rs: array<RedirectRule>) -> string {
     var lines: string[] = [];
     for (rs) { r ->
         assert (separatorFree(r.source)
@@ -140,8 +140,8 @@ pub fn writeRedirectTable(rs: Array<RedirectRule>) -> string {
     return lines.join("\n");
 }
 
-pub fn parseRedirectTable(wire: string) -> Array<RedirectRule> {
-    var out: Array<RedirectRule> = [];
+pub fn parseRedirectTable(wire: string) -> array<RedirectRule> {
+    var out: array<RedirectRule> = [];
     for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 3) {

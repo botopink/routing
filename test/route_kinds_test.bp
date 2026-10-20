@@ -10,7 +10,7 @@ fn kindText(k: RouteKind) -> string {
     };
 }
 
-fn sample() -> Array<#(string, RouteKind)> {
+fn sample() -> array<#(string, RouteKind)> {
     return [
         #("/", RouteKind.Static),
         #("/blog/[slug]", RouteKind.Dynamic),

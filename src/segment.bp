@@ -196,7 +196,7 @@ pub fn paramNamesOf(seg: string) -> string[] {
 // `Error` naming them.
 pub fn fillPattern(
     pattern: string,
-    bindings: Array<#(string, string)>,
+    bindings: array<#(string, string)>,
 ) -> Result<string, string> {
     val problem = fillProblem(pattern, bindings);
     if (problem != "") throw problem;
@@ -235,16 +235,16 @@ fn captures(k: SegmentKind) -> bool {
         || name == "OptionalCatchAll";
 }
 
-fn boundCount(bindings: Array<#(string, string)>, name: string) -> i32 {
+fn boundCount(bindings: array<#(string, string)>, name: string) -> i32 {
     return bindings.filter({ b -> b._0 == name }).length;
 }
 
-fn boundValue(bindings: Array<#(string, string)>, name: string) -> string {
+fn boundValue(bindings: array<#(string, string)>, name: string) -> string {
     return (bindings.filter({ b -> b._0 == name }).at(0) ?? #("", ""))._1;
 }
 
 // The first refusal `fillPattern` answers, `""` when the bindings fill it.
-fn fillProblem(pattern: string, bindings: Array<#(string, string)>) -> string {
+fn fillProblem(pattern: string, bindings: array<#(string, string)>) -> string {
     var problem = "";
     var names: string[] = [];
     for (bindings) { b ->

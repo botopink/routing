@@ -18,7 +18,7 @@ fn entryOf(file: ConventionFile) -> RouteEntry {
 }
 
 pub fn main() -> void {
-    var entries: Array<RouteEntry> = [];
+    var entries: array<RouteEntry> = [];
     for ([
         "app/layout.bpp",
         "app/blog/[slug]/page.bpp",

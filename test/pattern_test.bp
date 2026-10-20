@@ -7,8 +7,8 @@ import {pattern.PatternSegment, pattern.parsePattern, pattern.matchPattern, patt
 
 // `true` when `path` matches `pattern`; a pattern that does not parse matches
 // nothing.
-fn parsedOrNone(pattern: string) -> Array<PatternSegment> {
-    val none: Array<PatternSegment> = [
+fn parsedOrNone(pattern: string) -> array<PatternSegment> {
+    val none: array<PatternSegment> = [
         PatternSegment.Literal(text: "<refused>"),
     ];
     return parsePattern(pattern).unwrapOr(none);
