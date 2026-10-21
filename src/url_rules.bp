@@ -125,7 +125,7 @@ fn separatorFree(s: string) -> bool {
 
 pub fn writeRedirectTable(rs: array<RedirectRule>) -> string {
     var lines: string[] = [];
-    for r in rs {
+    for (rs) { r ->
         assert (separatorFree(r.source)
             && separatorFree(
                 r.destination,
@@ -142,7 +142,7 @@ pub fn writeRedirectTable(rs: array<RedirectRule>) -> string {
 
 pub fn parseRedirectTable(wire: string) -> array<RedirectRule> {
     var out: array<RedirectRule> = [];
-    for line in wire.split("\n") {
+    for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 3) {
             val flag = f.at(2) ?? "";

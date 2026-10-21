@@ -58,13 +58,13 @@ test "routing: clientHref inverts canonicalize over twenty paths" {
         "/assets/app.js",
     ];
     var n = 0;
-    for h in underDocs {
+    for (underDocs) { h ->
         if (roundTrips(docs(), h)) n = n + 1;
     }
-    for h in underSlash {
+    for (underSlash) { h ->
         if (roundTrips(docsSlash(), h)) n = n + 1;
     }
-    for h in noBase {
+    for (noBase) { h ->
         if (roundTrips(bare(), h)) n = n + 1;
     }
     try asserts.equals(

@@ -24,7 +24,7 @@ pub fn main() -> void {
         "app/blog.bp",
         "pages/blog/[slug].bpp",
     ];
-    for path in paths {
+    for (paths) { path ->
         terminal.print(describe(path));
     }
     val files = paths

@@ -23,20 +23,20 @@ pub fn main() -> void {
         fileKinds().map({ k -> k + ":" + kindLetter(k) }).join(" "),
     );
     var files: array<ConventionFile> = [];
-    for path in [
+    for ([
         "app/layout.bpp",
         "app/blog/[slug]/page.bpp",
         "app/blog/[slug]/not-found.bpp",
         "app/api/route.bp",
         "app/api/page.bpp",
-    ] {
+    ]) { path ->
         val file = classify("app", path);
         if (file != null) files.push(file);
     }
-    for f in files {
+    for (files) { f ->
         terminal.print(generated(f));
     }
-    for problem in conventionConflicts(files) {
+    for (conventionConflicts(files)) { problem ->
         terminal.print(problem);
     }
 }

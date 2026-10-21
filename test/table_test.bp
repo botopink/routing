@@ -53,7 +53,7 @@ test "routing: writeTable keeps registration order and ends no line with a bar" 
     assert lines.at(0) ?? "" == "L|/";
     assert lines.at(3) ?? "" == "D|/dashboard|team";
     assert lines.at(4) ?? "" == "R|/api/posts||GET";
-    for line in lines {
+    for (lines) { line ->
         assert line.endsWith("|").negate();
     }
 }

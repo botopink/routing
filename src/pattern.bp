@@ -35,7 +35,7 @@ fn sub(s: string, begin: i32, end: i32) -> string {
 
 fn segments(path: string) -> string[] {
     var out: string[] = [];
-    for s in path.split("/") {
+    for (path.split("/")) { s ->
         if (s != "") out.push(s);
     }
     return out;

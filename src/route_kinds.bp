@@ -22,7 +22,7 @@ fn kindLetter(k: RouteKind) -> string {
 
 pub fn writeKinds(kinds: array<#(string, RouteKind)>) -> string {
     var lines: string[] = [];
-    for k in kinds {
+    for (kinds) { k ->
         val pattern = k._0;
         assert (pattern.contains("|")
             || pattern.contains(
@@ -37,7 +37,7 @@ pub fn writeKinds(kinds: array<#(string, RouteKind)>) -> string {
 
 pub fn parseKinds(wire: string) -> array<#(string, RouteKind)> {
     var out: array<#(string, RouteKind)> = [];
-    for line in wire.split("\n") {
+    for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 2) {
             val pattern = f.at(0) ?? "";
@@ -56,7 +56,7 @@ pub fn parseKinds(wire: string) -> array<#(string, RouteKind)> {
 pub fn routeKindOf(wire: string, pattern: string) -> RouteKind {
     var kind = RouteKind.Dynamic;
     var found = false;
-    for k in parseKinds(wire) {
+    for (parseKinds(wire)) { k ->
         if ((found == false && k._0 == pattern)) {
             kind = k._1;
             found = true;

@@ -41,7 +41,7 @@ fn separatorFree(s: string) -> bool {
 
 pub fn writeSlotStates(states: array<#(string, string, SlotState)>) -> string {
     var lines: string[] = [];
-    for s in states {
+    for (states) { s ->
         assert separatorFree(s._0), "routing: slot_states: the slot name `"
             + s._0
             + "` holds a `|` or a newline, which the `z` blob uses as separators";
@@ -55,7 +55,7 @@ pub fn writeSlotStates(states: array<#(string, string, SlotState)>) -> string {
 
 pub fn parseSlotStates(wire: string) -> array<#(string, string, SlotState)> {
     var out: array<#(string, string, SlotState)> = [];
-    for line in wire.split("\n") {
+    for (wire.split("\n")) { line ->
         val f: string[] = line.split("|");
         if (f.length == 3)
             out.push(#(f.at(0) ?? "", f.at(1) ?? "", stateOf(f.at(2) ?? "")));

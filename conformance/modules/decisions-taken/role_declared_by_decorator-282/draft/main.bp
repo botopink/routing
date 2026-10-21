@@ -12,14 +12,14 @@ fn role(path: string) -> string {
 }
 
 pub fn main() -> void {
-    for path in [
+    for ([
         "app/blog/[slug]/page.bp",
         "app/blog/[slug]/layout.bp",
         "app/blog/[slug]/staticPaths.bp",
         "app/blog/[slug]/generateMetadata.bp",
         "app/blog/opengraph-image/size.bp",
         "app/content/collections.bp",
-    ] {
+    ]) { path ->
         terminal.print(role(path));
     }
 }

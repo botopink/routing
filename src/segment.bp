@@ -95,7 +95,7 @@ pub fn pathProblem(seg: string) -> string {
     var problem = "";
     val trimmed = trimSlashes(seg);
     if (trimmed == "") return "" else {
-        for raw in trimmed.split("/") {
+        for (trimmed.split("/")) { raw ->
             if (problem == "") {
                 val s = parseSegment(raw);
                 if (raw.contains("|"))
@@ -146,7 +146,7 @@ pub fn parsePath(seg: string) -> Segment[] {
     val trimmed = trimSlashes(seg);
     var out: Segment[] = [];
     if (trimmed == "") return out else {
-        for raw in trimmed.split("/") {
+        for (trimmed.split("/")) { raw ->
             out.push(parseSegment(raw));
         }
         return out;
@@ -156,7 +156,7 @@ pub fn parsePath(seg: string) -> Segment[] {
 // The URL pattern: groups and slots removed, the bracket spelling preserved.
 pub fn patternOf(segments: Segment[]) -> string {
     var parts: string[] = [];
-    for s in segments {
+    for (segments) { s ->
         val k = kindName(s.kind);
         if ((k != "Group" && k != "Slot")) parts.push(s.raw);
     }
@@ -168,7 +168,7 @@ pub fn patternOf(segments: Segment[]) -> string {
 // makes `dashboard/@team/settings` a `team` entry rather than a `dashboard` one.
 pub fn slotOf(segments: Segment[]) -> string {
     var name = "";
-    for s in segments {
+    for (segments) { s ->
         val k = kindName(s.kind);
         if (k == "Slot") name = s.name;
     }
@@ -182,7 +182,7 @@ pub fn slotOf(segments: Segment[]) -> string {
 // unclosed `[x` is a static segment and binds nothing).
 pub fn paramNamesOf(seg: string) -> string[] {
     var out: string[] = [];
-    for raw in seg.split("/") {
+    for (seg.split("/")) { raw ->
         if (captures(parseSegment(raw).kind)) out.push(parseSegment(raw).name);
     }
     return out;
@@ -201,7 +201,7 @@ pub fn fillPattern(
     val problem = fillProblem(pattern, bindings);
     if (problem != "") throw problem;
     var parts: string[] = [];
-    for raw in pattern.split("/") {
+    for (pattern.split("/")) { raw ->
         if (raw != "") {
             val s = parseSegment(raw);
             val k = kindName(s.kind);
@@ -220,7 +220,7 @@ pub fn fillPattern(
 // the separators, are kept byte for byte.
 pub fn toColonPattern(pattern: string) -> string {
     var parts: string[] = [];
-    for s in pattern.split("/") {
+    for (pattern.split("/")) { s ->
         if ((s.startsWith("[") && s.endsWith("]")))
             parts.push(":" + sub(s, 1, s.length() - 1))
         else
@@ -247,7 +247,7 @@ fn boundValue(bindings: array<#(string, string)>, name: string) -> string {
 fn fillProblem(pattern: string, bindings: array<#(string, string)>) -> string {
     var problem = "";
     var names: string[] = [];
-    for b in bindings {
+    for (bindings) { b ->
         if ((problem == "" && boundCount(bindings, b._0) > 1))
             problem = "routing: a binding row for `"
                 + pattern
@@ -255,7 +255,7 @@ fn fillProblem(pattern: string, bindings: array<#(string, string)>) -> string {
                 + b._0
                 + "` twice";
     }
-    for raw in pattern.split("/") {
+    for (pattern.split("/")) { raw ->
         val s = parseSegment(raw);
         val k = kindName(s.kind);
         if ((problem == "" && captures(s.kind))) {
@@ -284,7 +284,7 @@ fn fillProblem(pattern: string, bindings: array<#(string, string)>) -> string {
                     + "` is bound to the empty string";
         }
     }
-    for b in bindings {
+    for (bindings) { b ->
         if ((problem == "" && names.indexOf(b._0) < 0))
             problem = "routing: a binding row for `"
                 + pattern

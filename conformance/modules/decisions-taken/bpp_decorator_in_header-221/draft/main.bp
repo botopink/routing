@@ -19,12 +19,12 @@ fn entryOf(file: ConventionFile) -> RouteEntry {
 
 pub fn main() -> void {
     var entries: array<RouteEntry> = [];
-    for path in [
+    for ([
         "app/layout.bpp",
         "app/blog/[slug]/page.bpp",
         "app/blog/[slug]/loading.bpp",
         "app/about/page.bp",
-    ] {
+    ]) { path ->
         val file = classify("app", path);
         if (file != null) {
             terminal.print(file.authoredPath + " -> " + file.kind);
