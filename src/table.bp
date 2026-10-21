@@ -34,7 +34,7 @@ pub type RouteEntry(
 
 pub fn writeTable(entries: RouteEntry[]) -> string {
     var lines: string[] = [];
-    for (entries) { e ->
+    for e in entries {
         val head = e.kind + "|" + e.pattern;
         if (e.verb != "")
             lines.push(head + "|" + e.slot + "|" + e.verb)
@@ -49,7 +49,7 @@ pub fn writeTable(entries: RouteEntry[]) -> string {
 pub fn parseTable(wire: string) -> RouteEntry[] {
     var out: RouteEntry[] = [];
     if (wire == "") return out else {
-        for (wire.split("\n")) { line ->
+        for line in wire.split("\n") {
             if (line != "") {
                 val f: string[] = line.split("|");
                 out.push(

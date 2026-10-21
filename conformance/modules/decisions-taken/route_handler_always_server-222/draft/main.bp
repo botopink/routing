@@ -20,7 +20,7 @@ pub fn main() -> void {
     // The build's static pass names the pages it prerendered; a handler is
     // never one of them, `GET` included.
     val kinds = writeKinds([#("/posts", RouteKind.Static)]);
-    for (["/posts", "/api/posts"]) { pathname ->
+    for pathname in ["/posts", "/api/posts"] {
         val m = matchPath(table, pathname);
         val kind = m?.entry.kind ?? "";
         terminal.print(

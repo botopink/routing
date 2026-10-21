@@ -18,7 +18,7 @@ import {table.RouteEntry};
 
 pub fn splitPath(p: string) -> string[] {
     var out: string[] = [];
-    for (trimSlashes(p).split("/")) { s ->
+    for s in trimSlashes(p).split("/") {
         if (s != "") out.push(s);
     }
     return out;
@@ -139,8 +139,8 @@ pub fn ancestorPatterns(pattern: string) -> string[] {
 
 pub fn layoutChain(table: RouteEntry[], pattern: string) -> RouteEntry[] {
     var chain: RouteEntry[] = [];
-    for (ancestorPatterns(pattern)) { p ->
-        for (table) { e ->
+    for p in ancestorPatterns(pattern) {
+        for e in table {
             if (((e.kind == "L" && e.slot == "") && e.pattern == p))
                 chain.push(e);
         }
@@ -181,7 +181,7 @@ pub fn matchPath(table: RouteEntry[], pathname: string) -> ?RouteMatch {
     var bestNames: string[] = [];
     var bestValues: string[] = [];
     var bestRest: string[] = [];
-    for (table) { e ->
+    for e in table {
         if (((e.kind == "P" || e.kind == "R") && e.slot == "")) {
             val a = attempt(e.pattern, pathname);
             if (a.ok)

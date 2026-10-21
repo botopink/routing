@@ -43,7 +43,7 @@ test "routing: kindOf names a convention file's kind and nothing else" {
 }
 
 test "routing: kindLetter inverts table.kindLabel for the eight kinds" {
-    for (fileKinds()) { k ->
+    for k in fileKinds() {
         assert kindLabel(kindLetter(k)) == k;
     }
     try asserts.equals(kindLetter("layout"), "L");
@@ -58,7 +58,7 @@ test "routing: kindLetter inverts table.kindLabel for the eight kinds" {
 }
 
 test "routing: every kind classifies, with its segment" {
-    for (fileKinds()) { k ->
+    for k in fileKinds() {
         assert kindCell("app", "app/blog/" + k + ".bp") == k;
     }
     try asserts.equals(segmentCell("app", "app/page.bp"), "");

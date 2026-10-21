@@ -26,7 +26,7 @@ pub fn main() -> void {
     ];
     val wire = writeKinds(pages.map({ p -> #(p.pattern, stageOf(p)) }));
     terminal.print(wire);
-    for (["/", "/blog/[slug]", "/account", "/unknown"]) { pattern ->
+    for pattern in ["/", "/blog/[slug]", "/account", "/unknown"] {
         terminal.print(pattern + ": " + stageText(routeKindOf(wire, pattern)));
     }
 }

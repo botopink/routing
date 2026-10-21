@@ -44,7 +44,7 @@ pub fn fileKinds() -> string[] {
 // is not a convention.
 pub fn kindOf(file: string) -> ?string {
     var found = "";
-    for (fileKinds()) { k ->
+    for k in fileKinds() {
         if (file == k + ".bp") found = k;
     }
     if (found == "") return null else return found;
@@ -116,7 +116,7 @@ pub fn classify(appDir: string, path: string) -> ?ConventionFile {
 // refuses is skipped — that refusal is the caller's, one step up.
 pub fn conventionConflicts(entries: array<ConventionFile>) -> string[] {
     var problems: string[] = [];
-    for (segmentsOf(entries)) { seg ->
+    for seg in segmentsOf(entries) {
         if ((holds(entries, seg, "page") && holds(entries, seg, "route")))
             problems.push(
                 "routing: `"
@@ -126,7 +126,7 @@ pub fn conventionConflicts(entries: array<ConventionFile>) -> string[] {
     }
     var keys: string[] = [];
     var groups: string[] = [];
-    for (segmentsOf(entries)) { seg ->
+    for seg in segmentsOf(entries) {
         if (holds(entries, seg, "page")) {
             val parsed = parsePath(seg);
             val pattern = patternOf(parsed);
@@ -158,7 +158,7 @@ pub fn conventionConflicts(entries: array<ConventionFile>) -> string[] {
 // The distinct registrable segments of `entries`, in first-seen order.
 fn segmentsOf(entries: array<ConventionFile>) -> string[] {
     var out: string[] = [];
-    for (entries) { e ->
+    for e in entries {
         if ((out.indexOf(e.segment) < 0 && pathProblem(e.segment) == ""))
             out.push(e.segment);
     }
@@ -167,7 +167,7 @@ fn segmentsOf(entries: array<ConventionFile>) -> string[] {
 
 fn holds(entries: array<ConventionFile>, seg: string, kind: string) -> bool {
     var found = false;
-    for (entries) { e ->
+    for e in entries {
         if ((e.segment == seg && e.kind == kind)) found = true;
     }
     return found;
@@ -177,7 +177,7 @@ fn holds(entries: array<ConventionFile>, seg: string, kind: string) -> bool {
 fn rootGroupOf(seg: string) -> string {
     var head = "";
     var seen = false;
-    for (seg.split("/")) { raw ->
+    for raw in seg.split("/") {
         if ((seen == false && raw != "")) {
             head = raw;
             seen = true;
