@@ -2,11 +2,10 @@
   "name": "routing",
   "version": "0.0.1",
   "otp": "28",
-  "description": "The route matcher and the routing wires (route table, k/z blobs, URL rules, navigation signals, :param patterns) the server and the browser both run; pure .bp, erlang and commonJS",
+  "description": "The route matcher and the routing wires (route table, k/z blobs, URL rules, navigation signals, :param patterns) the server and the browser both run; pure .bp, every target",
   "src": "src/",
   "entry": "root.bp",
   "target": "erlang",
-  "targets": ["erlang", "beam", "commonJS"],
   "files": [
     "root.bp",
     "segment.bp",

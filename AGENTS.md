@@ -6,7 +6,7 @@
 
 The `routing` library (decisions 115, 116, 117): the route matcher and the
 routing wires that the server and the browser must both run, **one** implementation
-compiled for erlang and commonJS (`contracts.md § 1`). Neutral like std — no framework
+compiled for every target (`contracts.md § 1`; decision 993 (4)). Neutral like std — no framework
 imports another to get the matcher; both import it by name,
 `import {match.matchPath, table.parseTable} from "routing";`.
 
@@ -28,7 +28,7 @@ uses `collections.Dict`).
 ```text
 routing/
 ├── AGENTS.md
-├── botopink.json      ← "name": "routing", "target": "erlang", "targets": ["erlang", "commonJS"], `files` = every src module
+├── botopink.json      ← "name": "routing", "target": "erlang", no "targets" — all four, wasm included (decision 993 (4)), `files` = every src module
 ├── src/
 │   ├── root.bp        ← `pub mod` per module, a module before the siblings that import it
 │   ├── segment.bp     ← SegmentKind, Segment, parseSegment, kindName, pathProblem, trimSlashes, parsePath, patternOf, slotOf, paramNamesOf, fillPattern, toColonPattern
